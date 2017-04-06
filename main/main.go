@@ -100,10 +100,10 @@ func (l *language) search(s search) map[string]interface{} {
 }
 
 func main() {
-	in := make(chan int)
-	out := make(chan languageResponse)
+	in := make(chan int, 2)
+	out := make(chan languageResponse, 2)
 	for range areaMap {
-		go collectData(in, out)
+		go collectDataHh(in, out)
 	}
 	for id := range areaMap {
 		in <- id
@@ -129,8 +129,8 @@ func main() {
 	}
 
 	githubLanguages := make([]githubCounter, len(languages))
-	inGit := make(chan string)
-	outGit := make(chan githubCounter)
+	inGit := make(chan string, 2)
+	outGit := make(chan githubCounter, 2)
 	for range languages {
 		go NewGithubCounter(inGit, outGit)
 	}
@@ -149,7 +149,7 @@ func main() {
 	}
 }
 
-func collectData(in <-chan int, out chan <- languageResponse) {
+func collectDataHh(in <-chan int, out chan<- languageResponse) {
 	area := <-in
 	outArrayHh := map[string]interface{}{}
 	for name, searchParams := range languages {
