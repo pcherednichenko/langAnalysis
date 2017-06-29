@@ -11,7 +11,10 @@ To start the project:
 docker-compose up -d
 ```
 
-After starting the project will be available on the local host
+After starting the project will be available on the:
+```
+localhost:8090/
+```
 
 **Project at the initial stage of development**
 
