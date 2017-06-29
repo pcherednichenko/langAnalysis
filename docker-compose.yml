@@ -1,0 +1,35 @@
+version: "2"
+
+services:
+  database:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRESS_PASSWORD=postgres
+      - POSTGRES_DB=lang
+    ports:
+      - "5432:5432"
+    networks:
+      - back
+  app:
+    image: golang:1.8
+    volumes:
+      - .:/go/src/langAnalysis
+    working_dir: /go/src/langAnalysis
+    command: go run main/main.go
+    networks:
+      - back
+      - front
+    depends_on:
+      - database
+    ports:
+      - "8090:8090"
+    environment:
+      - DATABASE_CONN=postgres://postgres:postgres@database:5432/lang?sslmode=disable
+      - AUTOMIGRATE=true
+networks:
+  front:
+     driver: bridge
+  back:
+     driver: bridge
+
